@@ -14,11 +14,13 @@ public class CurrentAccount extends BankAccount{
 
     public CurrentAccount(String name, double balance, String tradeLicenseId) throws Exception {
         // minimum balance is 5000 by default. If balance is less than 5000, throw "Insufficient Balance" exception
+
         super(name,balance,5000);
         this.tradeLicenseId = tradeLicenseId;
-        if(balance < 5000){
-            throw new Exception("Insufficient Balance");
-        }
+//        if(balance < 5000){
+//            throw new Exception("Insufficient Balance");
+//        }
+        super.withdraw(0);
 
     }
 
@@ -42,12 +44,15 @@ public class CurrentAccount extends BankAccount{
         }
         int n = tradeLicenseId.length();
         if(n%2==0){
-            n /= 2 ;
+            n =n/2 ;
+            //System.out.println("even");
         }else{
-            n /=2 + 1;
+            //System.out.println("odd"+" "+n/2);
+            n =n/2 + 1;
         }
         for(int i=0 ; i<26;i++){
             if(noOfChar[i] > n){
+                //System.out.println(n+" "+noOfChar[i]);
                 throw new Exception("Valid License can not be generated");
             }
         }
