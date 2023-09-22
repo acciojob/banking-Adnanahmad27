@@ -1,7 +1,5 @@
 package com.driver;
 
-import java.util.Random;
-
 public class BankAccount {
 
     private String name;
@@ -39,17 +37,12 @@ public class BankAccount {
         if(digits<= 0 || sum < 0 || digits*9 < sum){
             throw new Exception("Account Number can not be generated");
         }
-        Random rd = new Random();
-        for(int i=0 ;i<digits-1 ; i++){
-            int maxDigit = Math.min(9, sum - (digits-1-i));
-            int digit = rd.nextInt(maxDigit+1);
+        //Random rd = new Random();
+        for(int i=0 ;i<digits ; i++){
+            int digit = Math.min(9,sum);
             sb.append(digit);
             sum -= digit;
         }
-        if(sum>9){
-            throw new Exception("Account Number can not be generated");
-        }
-        sb.append(sum);
         return sb.toString();
     }
 

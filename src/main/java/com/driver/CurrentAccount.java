@@ -35,55 +35,56 @@ public class CurrentAccount extends BankAccount{
                 valid = false;
             }
         }
-        int noOfChar[] = new int[26];
+
         if(!valid){
+            int noOfChar[] = new int[26];
             for(int i=0 ; i<tradeLicenseId.length();i++){
                 int idx = tradeLicenseId.charAt(i)-'A';
                 noOfChar[idx]++;
             }
-        }
-        int n = tradeLicenseId.length();
-        if(n%2==0){
-            n =n/2 ;
-            //System.out.println("even");
-        }else{
-            //System.out.println("odd"+" "+n/2);
-            n =n/2 + 1;
-        }
-        for(int i=0 ; i<26;i++){
-            if(noOfChar[i] > n){
-                //System.out.println(n+" "+noOfChar[i]);
-                throw new Exception("Valid License can not be generated");
+            int n = tradeLicenseId.length();
+            if(n%2==0){
+                n =n/2 ;
+            }else{
+                n =n/2 + 1;
             }
-        }
-        StringBuilder sb = new StringBuilder();
-        PriorityQueue<int[]> pq = new PriorityQueue<>((a,b) ->{
-            return b[0]-a[0];
-        });
-        for(int i=0 ; i<26;i++){
-            if(noOfChar[i]!=0){
-                pq.add(new int[] { noOfChar[i], i });
+            for(int i=0 ; i<26;i++){
+                if(noOfChar[i] > n){
+                    // If cnt of any Alpha is greater than n then it License can not be generated
+                    throw new Exception("Valid License can not be generated");
+                }
             }
-        }
-        while (pq.size()>1){
-            int a[] = pq.remove();
-            int b[] = pq.remove();
-            char x = (char)(a[1]+'A');
-            sb.append(x);
-            a[0]--;
-            if(a[0]!=0) pq.add(new int[] {a[0] , a[1]});
-            x=(char)(b[1]+'A');
-            sb.append(x);
+            StringBuilder sb = new StringBuilder();
+            // pq stores the cnt of alpha and idx.
+            PriorityQueue<int[]> pq = new PriorityQueue<>((a,b) ->{
+                return b[0]-a[0];
+            });
+            for(int i=0 ; i<26;i++){
+                if(noOfChar[i]!=0){
+                    pq.add(new int[] { noOfChar[i], i });
+                }
+            }
+            while (pq.size()>1){
+                int a[] = pq.remove();
+                int b[] = pq.remove();
+                char x = (char)(a[1]+'A');
+                sb.append(x);
+                a[0]--;
+                if(a[0]!=0) pq.add(new int[] {a[0] , a[1]});
+                x=(char)(b[1]+'A');
+                sb.append(x);
 
-            b[0]--;
-            if(b[0]!=0) pq.add(new int[] {b[0] ,b[1]});
+                b[0]--;
+                if(b[0]!=0) pq.add(new int[] {b[0] ,b[1]});
+            }
+            if(pq.size()==1){
+                int a[] = pq.remove();
+                char x = (char)(a[1]+'A');
+                sb.append(x);
+            }
+            tradeLicenseId = sb.toString();
         }
-        if(pq.size()==1){
-            int a[] = pq.remove();
-            char x = (char)(a[1]+'A');
-            sb.append(x);
-        }
-        tradeLicenseId = sb.toString();
+
     }
 
 }
