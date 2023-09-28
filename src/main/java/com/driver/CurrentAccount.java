@@ -1,15 +1,13 @@
 package com.driver;
+import java.util.Arrays;
 import java.util.PriorityQueue;
 
 public class CurrentAccount extends BankAccount{
 
-    String tradeLicenseId; //consists of Uppercase English characters only
+    private String tradeLicenseId; //consists of Uppercase English characters only
 
     public String getTradeLicenseId() {
         return tradeLicenseId;
-    }
-    public void setTradeLicenseId(String tradeLicenseId) {
-        this.tradeLicenseId = tradeLicenseId;
     }
 
     public CurrentAccount(String name, double balance, String tradeLicenseId) throws Exception {
@@ -17,10 +15,9 @@ public class CurrentAccount extends BankAccount{
 
         super(name,balance,5000);
         this.tradeLicenseId = tradeLicenseId;
-//        if(balance < 5000){
-//            throw new Exception("Insufficient Balance");
-//        }
-        super.withdraw(0);
+        if(balance < 5000){
+            throw new Exception("Insufficient Balance");
+        }
 
     }
 
@@ -36,13 +33,12 @@ public class CurrentAccount extends BankAccount{
             }
         }
         if(!valid){
-
+            int n = tradeLicenseId.length();
             int noOfChar[] = new int[26];
-            for(int i=0 ; i<tradeLicenseId.length();i++){
+            for(int i=0 ; i<n;i++){
                 int idx = tradeLicenseId.charAt(i)-'A';
                 noOfChar[idx]++;
             }
-            int n = tradeLicenseId.length();
 
             int maxFreq = 0;
             int idx = -1;
@@ -56,11 +52,11 @@ public class CurrentAccount extends BankAccount{
                     idx = i;
                 }
             }
-
+            //System.out.println(noOfChar[idx] + " " + (char)(idx+'A'));
             char resArray[] = new char[n];
             int index = 0;
             while(noOfChar[idx]-->0){
-                resArray[index] = (char)(noOfChar[idx]+'A');
+                resArray[index] = (char)(idx+'A');
                 index += 2 ;
             }
             for(int i=0 ; i<26 ; i++){
@@ -72,7 +68,11 @@ public class CurrentAccount extends BankAccount{
                     index += 2;
                 }
             }
-            this.tradeLicenseId = resArray.toString();
+            StringBuilder sb = new StringBuilder("");
+            for(int i=0 ; i<n ; i++){
+                sb.append(resArray[i]);
+            }
+            this.tradeLicenseId = sb.toString();
             /*
             StringBuilder sb = new StringBuilder();
             // pq stores the cnt of alpha and idx.
