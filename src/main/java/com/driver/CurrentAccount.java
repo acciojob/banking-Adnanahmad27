@@ -1,8 +1,8 @@
 package com.driver;
-
 import java.util.PriorityQueue;
 
 public class CurrentAccount extends BankAccount{
+
     String tradeLicenseId; //consists of Uppercase English characters only
 
     public String getTradeLicenseId() {
@@ -35,25 +35,45 @@ public class CurrentAccount extends BankAccount{
                 valid = false;
             }
         }
-
         if(!valid){
+
             int noOfChar[] = new int[26];
             for(int i=0 ; i<tradeLicenseId.length();i++){
                 int idx = tradeLicenseId.charAt(i)-'A';
                 noOfChar[idx]++;
             }
             int n = tradeLicenseId.length();
-            if(n%2==0){
-                n =n/2 ;
-            }else{
-                n =n/2 + 1;
-            }
+
+            int maxFreq = 0;
+            int idx = -1;
             for(int i=0 ; i<26;i++){
-                if(noOfChar[i] > n){
+                if(noOfChar[i] > (n+1)/2){
                     // If cnt of any Alpha is greater than n then it License can not be generated
                     throw new Exception("Valid License can not be generated");
                 }
+                if(noOfChar[i] > maxFreq){
+                    maxFreq = noOfChar[i];
+                    idx = i;
+                }
             }
+
+            char resArray[] = new char[n];
+            int index = 0;
+            while(noOfChar[idx]-->0){
+                resArray[index] = (char)(noOfChar[idx]+'A');
+                index += 2 ;
+            }
+            for(int i=0 ; i<26 ; i++){
+                while (noOfChar[i]-->0){
+                    if(index >= n){
+                        index = 1;
+                    }
+                    resArray[index] = (char)(i+'A');
+                    index += 2;
+                }
+            }
+            this.tradeLicenseId = resArray.toString();
+            /*
             StringBuilder sb = new StringBuilder();
             // pq stores the cnt of alpha and idx.
             PriorityQueue<int[]> pq = new PriorityQueue<>((a,b) ->{
@@ -83,8 +103,8 @@ public class CurrentAccount extends BankAccount{
                 sb.append(x);
             }
             tradeLicenseId = sb.toString();
+
+             */
         }
-
     }
-
 }

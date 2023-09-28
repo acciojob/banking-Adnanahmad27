@@ -37,7 +37,7 @@ public class BankAccount {
         if(digits<= 0 || sum < 0 || digits*9 < sum){
             throw new Exception("Account Number can not be generated");
         }
-        //Random rd = new Random();
+
         for(int i=0 ;i<digits ; i++){
             int digit = Math.min(9,sum);
             sb.append(digit);
